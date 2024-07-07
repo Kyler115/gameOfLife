@@ -1,0 +1,16 @@
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.Form1.resources
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.csproj.GenerateResource.cache
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.AssemblyInfoInputs.cache
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.AssemblyInfo.cs
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.csproj.CoreCompileInputs.cache
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\bin\Debug\net6.0-windows7.0\GameOfLife.exe
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\bin\Debug\net6.0-windows7.0\GameOfLife.deps.json
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\bin\Debug\net6.0-windows7.0\GameOfLife.runtimeconfig.json
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\bin\Debug\net6.0-windows7.0\GameOfLife.dll
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\bin\Debug\net6.0-windows7.0\GameOfLife.pdb
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.dll
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\refint\GameOfLife.dll
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.pdb
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.genruntimeconfig.cache
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\ref\GameOfLife.dll
