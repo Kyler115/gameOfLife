@@ -1,91 +1,691 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Drawing.Text;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameOfLife 
+namespace GameOfLife
 {
-    public class Game 
+    public class Game : Form1
     {
-        int[] living;
-        int[] dead;
-        int[] life;
-        public Game(int[] list)
+        public Game(CustomButton[] buttons)
         {
-            living = list;
-            int i = 0;
-            int j = 0;
-            while (i < 1024)
+            while (Form1.numAlive > 2)
             {
-                if (living.Contains(i))
+                foreach (CustomButton button in buttons)
                 {
-                    i++;
-                }
-                else
-                {
-                    dead[j] = i;
-                    i++;
-                }
-                j++;
-            }
-            i = 0;
-            j = 0;
+                    if (Form1.numAlive < 2)
+                    { 
+                        break; 
+                    }
+                    bool isAlive = button.isClicked();
+                    int aliveCount = countAlive(button);
 
-            int k = 0;
-            while (living.Length >= 3)
-            {
-                foreach (int c in dead)
-                {
-                    if (living.Contains(c - 31))
+                    if (isAlive)
                     {
-                        i++;
-                    }
-                    if (living.Contains(c - 32))
-                    {
-                        i++;
-                    }
-                    if (living.Contains(c - 33))
-                    {
-                        i++;
-                    }
-                    if (living.Contains(c + 1))
-                    {
-                        i++;
-                    }
-                    if (living.Contains(c - 1))
-                    {
-                        i++;
-                    }
-                    if (living.Contains(c + 31))
-                    {
-                        i++;
-                    }
-                    if (living.Contains(c + 32))
-                    {
-                        i++;
-                    }
-                    if (living.Contains(c + 33))
-                    {
-                        i++;
-                    }
-                    if (i <= 2 || i >= 4)
-                    {
+                        if (aliveCount == 2)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            button.kill(button);
+                        }
                     }
                     else
                     {
-                        life[k] = c;
-                        dead[k] = 0;
+                        if (aliveCount == 3)
+                        {
+                            button.alive(button);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
-                    k++;
                 }
+            }
+        }
+        private int countAlive(CustomButton currentButton)
+        {
+            int count = 0;
+            int iV = isValid(currentButton);
+            int bNum = currentButton.getBNum();
+            //special cases
+            //row = 0
+            if (iV == 1)
+            {
+                //0,0
+                if (currentButton.getCol() == 0)
+                {
+                    if (buttons[bNum + 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 33].isClicked())
+                    {
+                        count++;
+                    }
+                }
+                //0,31
+                else if (currentButton.getCol() == 31)
+                {
+                    if (buttons[bNum - 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 32].isClicked())
+                    {
+                        count++;
+                    }
+                }
+                //base cases
+                else
+                {
+                    if (buttons[bNum - 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 33].isClicked())
+                    {
+                        count++;
+                    }
+                }
+                return count;
+            }
 
+            // 0 col
+            else if (iV == 2)
+            {
+                // 31 row 
+                if (currentButton.getRow() == 31)
+                {
+                    if (buttons[bNum - 32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum - 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 1].isClicked())
+                    {
+                        count++;
+                    }
+                }
+                else
+                {
+                    if (buttons[bNum - 32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum - 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 33].isClicked())
+                    {
+                        count++;
+                    }
+                }
+                return count;
+            }
+
+            else if (iV == 3)
+            {
+                //31,31
+                if (currentButton.getCol() == 31)
+                {
+                    if (buttons[bNum - 32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum - 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum - 1].isClicked())
+                    {
+                        count++;
+                    }
+                }
+                else
+                {
+                    if (buttons[bNum - 32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum - 33].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum - 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum - 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[bNum + 1].isClicked())
+                    {
+                        count++;
+                    }
+                }
+                return count;
 
             }
-            
+            else if (iV == 4)
+            {
+                if (buttons[bNum - 32].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum - 33].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum - 1].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum + 32].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum + 31].isClicked())
+                {
+                    count++;
+                }
+                return count;
+            }
+            else
+            {
+                if (buttons[bNum - 32].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum - 33].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum - 31].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum + 32].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum + 31].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum + 33].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum - 1].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[bNum + 1].isClicked())
+                {
+                    count++;
+                }
+                return count;
+            }
         }
 
-
+        private int isValid(CustomButton currentButton)
+        {
+            if (currentButton.getRow() == 0)
+            {
+                return 1;
+            }
+            else if (currentButton.getCol() == 0)
+            {
+                return 2;
+            }
+            else if (currentButton.getRow() == 31)
+            {
+                return 3;
+            }
+            else if (currentButton.getCol() == 31)
+            {
+                return 4;
+            }
+            else 
+            {
+                return 0;
+            } 
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//here lies my hope and my dreams : only about 8 hours of code thrown away. This is another reason why you should never hardcode.
+/*
+ * //SPECIAL CASES
+            if (iV == 1)
+            {
+                //0,0 special case
+                if (currentButton.getCol() == 0)
+                {
+                    if (buttons[1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[32].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[33].isClicked())
+                    {
+                        count++;
+                    }
+                    return count;
+                }
+
+                //0,31
+                else if (currentButton.getCol() == 31)
+                {
+                    if (buttons[30].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[64].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[63].isClicked())
+                    {
+                        count++;
+                    }
+                    return count;
+                }
+                //in 0 row 
+                else
+                {
+                    if (buttons[currentButton.getRow() * currentButton.getCol() + 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[currentButton.getRow() * currentButton.getCol() - 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[currentButton.getRow() + 1 * currentButton.getCol()].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[currentButton.getRow() + 1 * currentButton.getCol() + 1].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[currentButton.getRow() + 1 * currentButton.getCol() - 1].isClicked())
+                    {
+                        count++;
+                    }
+                    return count;
+                }
+            }
+            // in 0 col
+            else if (iV == 2)
+            {
+                if (buttons[currentButton.getRow() - 1 * currentButton.getCol()].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() - 1 * currentButton.getCol() + 1].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() * currentButton.getCol() + 1].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() + 1 * currentButton.getCol()].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() + 1 * currentButton.getCol() + 1].isClicked())
+                {
+                    count++;
+                }
+                return count;
+            }
+
+            //last row case
+            else if (iV == 3)
+            {
+                //special special
+                if (currentButton.getCol() == 31)
+                {
+                    if (buttons[30 * 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[30 * 30].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[31 * 30].isClicked())
+                    {
+                        count++;
+                    }
+                    return count;
+                }
+                //0,31 case
+                else if (currentButton.getCol() == 0)
+                {
+                    if (buttons[31 * 31].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[30 * 30].isClicked())
+                    {
+                        count++;
+                    }
+                    if (buttons[31 * 30].isClicked())
+                    {
+                        count++;
+                    }
+                    return count;
+                }
+            }
+
+
+            //LAST COL CASE
+            else if (iV == 4)
+            {
+                if (buttons[currentButton.getRow() - 1 * currentButton.getCol()].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() - 1 * currentButton.getCol() - 1].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() * currentButton.getCol() - 1].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() + 1 * currentButton.getCol()].isClicked())
+                {
+                    count++;
+                }
+                if (buttons[currentButton.getRow() + 1 * currentButton.getCol() - 1].isClicked())
+                {
+                    count++;
+                }
+                return count;
+            }
+        }
+int i = 0;
+int lifeVariable = 0;
+while (Form1.numAlive > 2)
+{
+    foreach (CustomButton button in buttons)
+    {
+        if(Form1.numAlive < 3)
+            { break; }
+
+        if (i < 33)
+        {
+            if (i == 32)
+            {
+                if (buttons[i - 32].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (buttons[i - 31].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+            }
+            if (i == 0)
+            {
+                if (buttons[i + 1].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (buttons[i + 31].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (buttons[i + 32].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (buttons[i + 33].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (lifeVariable < 2 || lifeVariable >= 4)
+                {
+                    if (button.isClicked())
+                    {
+                        button.kill(button);
+                    }
+                }
+                else if (lifeVariable == 3 && button.isClicked() == true)
+                {
+                    button.kill(button);
+                }
+                else if (button.isClicked() == false && lifeVariable == 3)
+                {
+                    button.alive(button);
+                }
+                i++;
+                lifeVariable = 0;
+                continue;
+            }
+            if (buttons[i - 1].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (buttons[i + 1].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (buttons[i + 31].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (buttons[i + 32].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (buttons[i + 33].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (lifeVariable < 2 || lifeVariable >= 4)
+            {
+                if (button.isClicked())
+                {
+                    button.kill(button);
+                }
+            }
+            else if (lifeVariable == 3 && button.isClicked() == true)
+            {
+                button.kill(button);
+            }
+            else if (button.isClicked() == false && lifeVariable == 3)
+            {
+                button.alive(button);
+            }
+            i++;
+            lifeVariable = 0;
+            continue;
+        }
+
+        else if (i >= 991)
+        {
+            if (i == 1025)
+            {
+                if (buttons[i - 33].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (buttons[i - 32].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (buttons[i - 31].isClicked() == true)
+                {
+                    lifeVariable++;
+                }
+                if (lifeVariable < 2 || lifeVariable >= 4)
+                {
+                    if (button.isClicked())
+                    {
+                        button.kill(button);
+                    }
+                }
+                else if (lifeVariable == 3 && button.isClicked() == true)
+                {
+                    button.kill(button);
+                }
+                else if (button.isClicked() == false && lifeVariable == 3)
+                {
+                    button.alive(button);
+                }
+                lifeVariable = 0;
+                i = 0;
+                break;
+            }
+            if (buttons[i - 33].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (buttons[i - 32].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (buttons[i - 31].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (buttons[i - 1].isClicked() == true)
+            {
+                lifeVariable++;
+            }
+            if (lifeVariable < 2 || lifeVariable >= 4)
+            {
+                if (button.isClicked())
+                {
+                    button.kill(button);
+                }
+            }
+            else if (lifeVariable == 3 && button.isClicked() == true)
+            {
+                button.kill(button);
+            }
+            else if (button.isClicked() == false && lifeVariable == 3)
+            {
+                button.alive(button);
+            }
+            i++;
+            lifeVariable = 0;
+            continue;
+        }
+
+        if (buttons[i - 33].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (buttons[i - 32].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (buttons[i - 31].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (buttons[i - 1].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (buttons[i + 1].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (buttons[i + 31].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (buttons[i + 32].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (buttons[i + 33].isClicked() == true)
+        {
+            lifeVariable++;
+        }
+        if (lifeVariable < 2 || lifeVariable >= 4)
+        {
+            if (button.isClicked())
+            {
+                button.kill(button);
+            }
+        }
+        else if (lifeVariable == 3 && button.isClicked() == true)
+        {
+            button.kill(button);
+        }
+        else if (button.isClicked() == false && lifeVariable == 3)
+        {
+            button.alive(button);
+        }
+        i++;
+        lifeVariable = 0;
+    }
+}
+Form1.numAlive = 0;
+*/

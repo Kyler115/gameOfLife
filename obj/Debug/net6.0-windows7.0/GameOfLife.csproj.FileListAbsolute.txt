@@ -14,3 +14,4 @@ C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows
 C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.pdb
 C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.genruntimeconfig.cache
 C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\ref\GameOfLife.dll
+C:\Users\kyler\OneDrive\Desktop\Personal\GoL\GameOfLife\obj\Debug\net6.0-windows7.0\GameOfLife.sourcelink.json
