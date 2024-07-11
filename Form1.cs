@@ -5,6 +5,7 @@ namespace GameOfLife
         public CustomButton[] buttons = new CustomButton[1024];
         public bool flag = false;
         public static int numAlive = 0;
+        public static bool run = true;
         public Form1()
         {
             InitializeComponent();
@@ -20,7 +21,7 @@ namespace GameOfLife
                 while (j < 32)
                 {
                     var button = new CustomButton(k);
-                    button.setRowCol(j, i);
+                    button.setRowCol(i, j);
                     button.Tag = k;
                     button.Margin = new Padding(0);
                     button.Name = string.Format("button_{0}{1}", i, j);
@@ -50,7 +51,28 @@ namespace GameOfLife
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Game game = new Game(buttons);
+            run = true;
+            Task.Run(() => RunGame());
+        }
+        private void RunGame()// chat GPT Used here, i did not know how to use lambda methods in c#, just python. Further, i 
+                              // did not know that invoke was a thing, and this bit of code was confusing, so i tried
+                              // to seperate it based on my understanding.
+        {
+            while (run)
+            {
+                Game game = new Game(buttons);
+                Invoke(
+                    (Action)
+                        (() =>
+                        {
+                            foreach (var button in buttons)
+                            {
+                                button.RefreshState();
+                            }
+                        })
+                       );
+                Thread.Sleep(500);
+            }
         }
 
     }

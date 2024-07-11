@@ -64,5 +64,14 @@ namespace GameOfLife
 
         public int getBNum() { return bNum;}
 
+        public void RefreshState()
+        {
+            UpdateColor();
+        }
+
+        public void UpdateColor()// chat gpt, i dont understand the ? and the 
+        {
+            this.BackColor = clicked ? Color.Yellow : default(Color);
+        }
     }
 }

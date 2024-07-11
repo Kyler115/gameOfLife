@@ -12,15 +12,86 @@ namespace GameOfLife
 {
     public class Game : Form1
     {
-        public Game(CustomButton[] buttons)
+        public Game(CustomButton[] buttonsGiven)
         {
-            while (Form1.numAlive > 2)
+            this.buttons = buttonsGiven;
+            CustomButton[] newButtons = new CustomButton[buttonsGiven.Length];
+            for (int i = 0; i < buttons.Length; i++)
             {
-                foreach (CustomButton button in buttons)
+                newButtons[i] = (CustomButton)buttons[i];
+            }
+
+            foreach (CustomButton currentButton in buttonsGiven)
+            {
+                int aliveN = countAlive(currentButton);
+                bool isAlive = currentButton.isClicked();
+
+                if (isAlive)
+                {
+                    if (aliveN < 2 || aliveN > 3)
+                    {
+                        newButtons[currentButton.getBNum()].kill(newButtons[currentButton.getBNum()]);
+                        currentButton.kill(currentButton);
+                    }
+                }
+                else
+                {
+                    if (aliveN == 3)
+                    {
+                        newButtons[currentButton.getBNum()].alive(newButtons[currentButton.getBNum()]);
+                        currentButton.alive(currentButton);
+                    }
+                }
+
+            }
+
+        }
+        private int countAlive(CustomButton currentButton)
+        {
+            int row = currentButton.getRow();
+            int col = currentButton.getCol();
+            int currentB = currentButton.getBNum();
+            int[] neighbors = { -33, -32, -31, -1, 1, 31, 32, 33 };
+            foreach (int i in neighbors)
+            {
+                int neighbor = i + currentB;
+                if(neighbor <= 0 || neighbor)
+            }
+            int count = 0;
+            return count;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+ * More broken code :(
+ *         CustomButton[] buttons;
+        public Game(CustomButton[] buttonsGiven)
+        {
+            this.buttons = buttonsGiven;
+                if (Form1.numAlive < 2)
+                {
+                   run = false;
+                    return;
+                }
+
+            foreach (CustomButton button in buttons)
                 {
                     if (Form1.numAlive < 2)
-                    { 
-                        break; 
+                    {
+                        run = false;
                     }
                     bool isAlive = button.isClicked();
                     int aliveCount = countAlive(button);
@@ -48,7 +119,6 @@ namespace GameOfLife
                         }
                     }
                 }
-            }
         }
         private int countAlive(CustomButton currentButton)
         {
@@ -293,20 +363,7 @@ namespace GameOfLife
             } 
         }
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
+}*/
 
 //here lies my hope and my dreams : only about 8 hours of code thrown away. This is another reason why you should never hardcode.
 /*
