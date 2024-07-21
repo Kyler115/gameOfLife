@@ -71,7 +71,7 @@ namespace GameOfLife
                             }
                         })
                        );
-                Thread.Sleep(500);
+                Thread.Sleep(50);
             }
         }
 

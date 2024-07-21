@@ -18,7 +18,7 @@ namespace GameOfLife
             CustomButton[] newButtons = new CustomButton[buttonsGiven.Length];
             for (int i = 0; i < buttons.Length; i++)
             {
-                newButtons[i] = (CustomButton)buttons[i];
+                newButtons[i] = buttonsGiven[i];
             }
 
             foreach (CustomButton currentButton in buttonsGiven)
@@ -31,7 +31,6 @@ namespace GameOfLife
                     if (aliveN < 2 || aliveN > 3)
                     {
                         newButtons[currentButton.getBNum()].kill(newButtons[currentButton.getBNum()]);
-                        currentButton.kill(currentButton);
                     }
                 }
                 else
@@ -39,15 +38,16 @@ namespace GameOfLife
                     if (aliveN == 3)
                     {
                         newButtons[currentButton.getBNum()].alive(newButtons[currentButton.getBNum()]);
-                        currentButton.alive(currentButton);
                     }
                 }
 
             }
+            this.buttons = newButtons;
 
         }
         private int countAlive(CustomButton currentButton)
         {
+            int count = 0;
             int row = currentButton.getRow();
             int col = currentButton.getCol();
             int currentB = currentButton.getBNum();
@@ -55,10 +55,26 @@ namespace GameOfLife
             foreach (int i in neighbors)
             {
                 int neighbor = i + currentB;
-                if(neighbor <= 0 || neighbor)
+                if (isValid(neighbor, row, col))
+                {
+                    if (buttons[neighbor].isClicked())
+                    {
+                        count++;
+                    }
+                }
             }
-            int count = 0;
             return count;
+        }
+
+        private bool isValid(int neighbor, int row, int col)
+        {
+            int neighborRow = neighbor/32;
+            int neighborCol = neighbor%32;
+            if (neighborRow < 0 || neighborRow >= 32 || neighborCol < 0 || neighborCol >= 32)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
